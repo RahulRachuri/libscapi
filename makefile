@@ -27,7 +27,7 @@ OBJ_FILES     += $(patsubst src/%.c,obj/%.o,$(C_FILES))
 OUT_DIR        = obj obj/mid_layer obj/circuits obj/comm obj/infra obj/interactive_mid_protocols obj/primitives obj/circuits_c obj/cryptoInfra
 INC            = -Iinstall/include -Iinstall/include/OTExtensionBristol -Iinstall/include/libOTe -Iinstall/include/libOTe/cryptoTools
 GCC_STANDARD = c++14
-CPP_OPTIONS   := -std=$(GCC_STANDARD) $(INC)  -maes -mpclmul -mbmi2 -Wall -Wno-uninitialized -Wno-format -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -Wno-parentheses -O3
+CPP_OPTIONS   := -std=$(GCC_STANDARD) $(INC)  -maes -mpclmul -mbmi2 -Wall -Wno-uninitialized -Wno-format -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-variable -Wno-unused-result -Wno-sign-compare -Wno-parentheses -O3 -fPIC
 $(COMPILE.cpp) = g++ -c $(CPP_OPTIONS) -o $@ $<
 LIBRARIES_DIR  = -Linstall/lib
 LD_FLAGS = 
@@ -189,7 +189,7 @@ compile-ntl:
 	mkdir -p $(builddir)/NTL
 	cp -r lib/NTL/unix/. $(builddir)/NTL
 	chmod 777 $(builddir)/NTL/src/configure
-	cd $(builddir)/NTL/src/ && ./configure CXX=$(CXX) WIZARD=off
+	cd $(builddir)/NTL/src/ && ./configure CXX=$(CXX) WIZARD=off CXXFLAGS=-g -O3 -fPIC
 	$(MAKE) -C $(builddir)/NTL/src/
 	$(MAKE) -C $(builddir)/NTL/src/ PREFIX=$(prefix) install
 	touch compile-ntl
